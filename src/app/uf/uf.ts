@@ -6,44 +6,44 @@ import { RouterModule } from '@angular/router';
 import { CadastroService } from '../cadastro';
 
 @Component({
-  selector: 'app-sexo',
+  selector: 'app-uf',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule
-  ],
-  templateUrl: './sexo.html',
-  styleUrls: ['./sexo.scss']
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './uf.html',
+  styleUrls: ['./uf.scss']
 })
-export class SexoComponent {
+export class UfComponent {
   nome = '';
+  sigla = '';
   salvando = false;
   mensagem = '';
   erro = '';
 
   constructor(
     private cadastroService: CadastroService,
-    private router: Router,
-    private location: Location
-  ) { }
+    private router: Router
+  ) {}
 
   salvar() {
-    if (this.nome.trim() === '') {
-      this.erro = 'Nome é obrigatório';
+    if (this.nome.trim() === '' || this.sigla.trim() === '') {
+      this.erro = 'Nome e sigla são obrigatórios';
       return;
     }
 
     this.salvando = true;
     this.erro = '';
 
-    const dados = { name: this.nome };
+    const dados = {
+      name: this.nome,
+      siglaUf: this.sigla.toUpperCase()
+    };
 
-    this.cadastroService.salvarSexo(dados).subscribe({
+    this.cadastroService.salvarUf(dados).subscribe({
       next: () => {
         this.salvando = false;
-        this.mensagem = 'Salvo com sucesso!';
+        this.mensagem = 'UF salva com sucesso!';
         this.nome = '';
+        this.sigla = '';
         setTimeout(() => this.mensagem = '', 3000);
       },
       error: (erro) => {
@@ -54,7 +54,7 @@ export class SexoComponent {
     });
   }
 
-   voltar() {
+  voltar() {
     this.router.navigate(['/']);
   }
 }

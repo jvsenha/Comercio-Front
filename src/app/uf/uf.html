@@ -1,11 +1,9 @@
-
 <div class="container">
   <div class="card">
 
-
     <div class="header">
       <button class="btn-voltar" (click)="voltar()">←</button>
-      <h2>Cadastrar Sexo</h2>
+      <h2>Cadastrar UF</h2>
       <div></div>
     </div>
 
@@ -17,27 +15,31 @@
       ✗ {{ erro }}
     </div>
 
-
     <div class="form">
       <div class="campo">
         <label>Nome *</label>
         <input
           type="text"
           [(ngModel)]="nome"
-          placeholder="Digite o nome"
+          placeholder="Digite o nome do estado"
           [class.input-erro]="erro && nome.trim() === ''"
         />
       </div>
 
+      <div class="campo">
+        <label>Sigla *</label>
+        <input
+          type="text"
+          [(ngModel)]="sigla"
+          placeholder="Digite a sigla do estado"
+          maxlength="2"
+          [class.input-erro]="erro && sigla.trim() === ''"
+        />
+      </div>
+
       <div class="botoes">
-        <button class="btn-cancelar" (click)="voltar()">
-          Cancelar
-        </button>
-        <button
-          class="btn-salvar"
-          (click)="salvar()"
-          [disabled]="salvando"
-        >
+        <button class="btn-cancelar" (click)="voltar()">Cancelar</button>
+        <button class="btn-salvar" (click)="salvar()" [disabled]="salvando">
           <span *ngIf="!salvando">Salvar</span>
           <span *ngIf="salvando">Salvando...</span>
         </button>

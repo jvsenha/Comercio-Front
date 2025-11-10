@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SexoComponent } from './sexo';
+import { CepComponent } from './cep';
 
-describe('SexoComponent', () => {
-  let component: SexoComponent;
-  let fixture: ComponentFixture<SexoComponent>;
+describe('Cep', () => {
+  let component: CepComponent;
+  let fixture: ComponentFixture<CepComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SexoComponent]
+      imports: [CepComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SexoComponent);
+    fixture = TestBed.createComponent(CepComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

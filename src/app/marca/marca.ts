@@ -1,50 +1,42 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CadastroService } from '../cadastro';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { CadastroService } from '../cadastro';
+
 
 @Component({
-  selector: 'app-sexo',
-  standalone: true,
+  selector: 'app-marca',
+  templateUrl: './marca.html',
+   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
-    RouterModule
+    CommonModule
   ],
-  templateUrl: './sexo.html',
-  styleUrls: ['./sexo.scss']
+  styleUrls: ['./marca.scss']
 })
-export class SexoComponent {
+export class MarcaComponent {
   nome = '';
   salvando = false;
   mensagem = '';
   erro = '';
 
-  constructor(
-    private cadastroService: CadastroService,
-    private router: Router,
-    private location: Location
-  ) { }
+  constructor(private cadastroService: CadastroService, private router: Router) { }
 
   salvar() {
     if (this.nome.trim() === '') {
       this.erro = 'Nome é obrigatório';
       return;
     }
-
     this.salvando = true;
     this.erro = '';
-
     const dados = { name: this.nome };
-
-    this.cadastroService.salvarSexo(dados).subscribe({
-      next: () => {
+    this.cadastroService.salvarMarca(dados).subscribe({
+      next: (resposta) => {
         this.salvando = false;
         this.mensagem = 'Salvo com sucesso!';
         this.nome = '';
-        setTimeout(() => this.mensagem = '', 3000);
+        setTimeout(() => { this.mensagem = ''; }, 3000);
       },
       error: (erro) => {
         this.salvando = false;
@@ -54,7 +46,7 @@ export class SexoComponent {
     });
   }
 
-   voltar() {
+  voltar() {
     this.router.navigate(['/']);
   }
 }

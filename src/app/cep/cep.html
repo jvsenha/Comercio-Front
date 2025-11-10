@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="card">
+    <div class="header">
+      <button class="btn-voltar" (click)="voltar()">←</button>
+      <h2>Cadastrar CEP</h2>
+      <div></div>
+    </div>
+    <div class="sucesso" *ngIf="mensagem">✓ {{ mensagem }}</div>
+    <div class="erro" *ngIf="erro">✗ {{ erro }}</div>
+    <div class="form">
+      <div class="campo">
+        <label>Número CEP *</label>
+        <input
+          type="text"
+          [(ngModel)]="numeroCep"
+          placeholder="Digite apenas números (8 dígitos)"
+          maxlength="8"
+          pattern="[0-9]*"
+          title="Apenas números"
+        />
+      </div>
+      <div class="botoes">
+        <button class="btn-cancelar" (click)="voltar()">Cancelar</button>
+        <button class="btn-salvar" (click)="salvar()" [disabled]="salvando">
+          <span *ngIf="!salvando">Salvar</span>
+          <span *ngIf="salvando">Salvando...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
