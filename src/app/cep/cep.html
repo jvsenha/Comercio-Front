@@ -13,11 +13,8 @@
         <input
           type="text"
           [(ngModel)]="numeroCep"
-          placeholder="Digite apenas números (8 dígitos)"
-          maxlength="8"
-          pattern="[0-9]*"
-          title="Apenas números"
-        />
+          placeholder="Digite o CEP"
+          mask="00000-000" maxlength="9"   />
       </div>
       <div class="botoes">
         <button class="btn-cancelar" (click)="voltar()">Cancelar</button>

@@ -1,0 +1,91 @@
+/* src/app/pages/dashboard/dashboard.scss */
+
+.header {
+  margin-bottom: 24px;
+}
+
+.header h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.stat-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  min-height: 140px;
+}
+
+/* Estilo dos cards claros */
+.stat-card.light {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+}
+
+/* Estilo do card escuro (Vendas) */
+.stat-card.dark {
+  background-color: #2d3748; /* Um cinza-azulado escuro */
+  color: #ffffff;
+}
+
+.stat-card span {
+  font-size: 14px;
+  color: #718096; /* Cinza */
+}
+
+.stat-card.dark span {
+  color: #a0aec0; /* Cinza claro */
+}
+
+.stat-card h3 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 8px 0;
+}
+
+.stat-card .percentage {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.stat-card .percentage.positive {
+  color: #48bb78; /* Verde */
+}
+
+.stat-card .percentage.negative {
+  color: #f56565; /* Vermelho */
+}
+
+.stat-card.dark .percentage.positive {
+  color: #9ae6b4; /* Verde claro */
+}
+
+/* Animação de "carregando" */
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  margin: 8px 0;
+}
+
+.stat-card.light .spinner {
+  border-color: rgba(0, 0, 0, 0.1);
+  border-top-color: #333;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

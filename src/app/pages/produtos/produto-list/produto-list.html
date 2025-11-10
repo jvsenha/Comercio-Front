@@ -1,0 +1,46 @@
+<div class=".page-header">
+  <h2>Produtos</h2>
+  <button class="btn btn-primary" (click)="addNewProduto()">Adicionar Produto</button>
+</div>
+
+<div class=".table-card">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Valor</th>
+        <th>Qtd.</th>
+        <th>Marca</th>
+        <th>Tipo</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="isLoading">
+        <td colspan="7" class="text-center">Carregando...</td>
+      </tr>
+
+      <tr *ngIf="!isLoading && erroAoCarregar">
+        <td colspan="7" class="text-center error-message">{{ erroAoCarregar }}</td>
+      </tr>
+
+      <tr *ngIf="!isLoading && !erroAoCarregar && produtos.length === 0">
+        <td colspan="7" class="text-center">Nenhum produto encontrado.</td>
+      </tr>
+
+      <tr *ngFor="let produto of produtos">
+        <td>{{ produto.id }}</td>
+        <td>{{ produto.name }}</td>
+        <td>{{ produto.valor | currency:'BRL' }}</td>
+        <td>{{ produto.quantidade }}</td>
+        <td>{{ produto.marca?.name }}</td>
+        <td>{{ produto.tipo?.name }}</td>
+        <td class="actions">
+          <button class="btn btn-icon" (click)="editProduto(produto)" title="Editar">✏️</button>
+          <button class="btn btn-icon btn-danger" (click)="deleteProduto(produto.id)" title="Excluir">🗑️</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

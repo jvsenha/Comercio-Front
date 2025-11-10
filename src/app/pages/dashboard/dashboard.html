@@ -1,0 +1,39 @@
+<div class="header">
+  <h2>Dashboard</h2>
+  </div>
+
+<div class="stat-cards-grid">
+
+  <div class="stat-card dark">
+    <span>Total de Vendas</span>
+    <h3 *ngIf="!isLoading">{{ totalVendas }}</h3>
+    <div *ngIf="isLoading" class="spinner"></div>
+    <span class="percentage positive">+0.0%</span>
+    <span> do último mês</span>
+  </div>
+
+  <div class="stat-card light">
+    <span>Total de Clientes</span>
+    <h3 *ngIf="!isLoading">{{ totalClientes }}</h3>
+    <div *ngIf="isLoading" class="spinner"></div>
+    <span class="percentage positive">+0.0%</span>
+    <span> do último mês</span>
+  </div>
+
+  <div class="stat-card light">
+    <span>Total de Produtos</span>
+    <h3 *ngIf="!isLoading">{{ totalProdutos }}</h3>
+    <div *ngIf="isLoading" class="spinner"></div>
+    <span class="percentage positive">+0.0%</span>
+    <span> do último mês</span>
+  </div>
+
+  <div class="stat-card light">
+    <span>Total de Marcas</span>
+    <h3 *ngIf="!isLoading">{{ totalMarcas }}</h3>
+    <div *ngIf="isLoading" class="spinner"></div>
+    <span class="percentage positive">+0.0%</span>
+    <span> do último mês</span>
+  </div>
+
+</div>

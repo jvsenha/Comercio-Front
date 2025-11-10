@@ -1,0 +1,84 @@
+<div class="card">
+  <div class="header">
+    <button class="btn-voltar" (click)="voltar()" title="Voltar">←</button>
+    <h2>Adicionar Novo Cliente</h2>
+    <div></div>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center">Carregando dados...</div>
+
+  <form *ngIf="!isLoading" (ngSubmit)="salvar()">
+    <div class="sucesso" *ngIf="mensagem">✓ {{ mensagem }}</div>
+    <div class="erro" *ngIf="erro">✗ {{ erro }}</div>
+
+    <div class="form-grid">
+      <div class="campo">
+        <label for="name">Nome *</label>
+        <input id="name" type="text" [(ngModel)]="cliente.name" name="name" required />
+      </div>
+
+      <div class="campo">
+        <label for="cpf">CPF *</label>
+        <input id="cpf" type="text" [(ngModel)]="cliente.cpfCliente" name="cpfCliente" required />
+      </div>
+
+      <div class="campo">
+        <label for="dataNasc">Data de Nascimento</label>
+        <input id="dataNasc" type="date" [(ngModel)]="cliente.dataNasc" name="dataNasc" />
+      </div>
+
+      <div class="campo">
+        <label for="sexo">Sexo *</label>
+        <select id="sexo" [(ngModel)]="cliente.sexo.id" name="sexo" required>
+          <option [ngValue]="null" disabled>Selecione...</option>
+          <option *ngFor="let s of sexos" [ngValue]="s.id">{{ s.name }}</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="numeroCasa">Número da Casa</label>
+        <input id="numeroCasa" type="text" [(ngModel)]="cliente.numeroCasa" name="numeroCasa" />
+      </div>
+
+      <div class="campo">
+        <label for="cep">CEP</label>
+        <select id="cep" [(ngModel)]="cliente.cep.id" name="cep">
+          <option [ngValue]="null" disabled>Selecione...</option>
+          <option *ngFor="let c of ceps" [ngValue]="c.id">{{ c.numeroCep }}</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="rua">Rua</label>
+        <select id="rua" [(ngModel)]="cliente.rua.id" name="rua">
+          <option [ngValue]="null" disabled>Selecione...</option>
+          <option *ngFor="let r of ruas" [ngValue]="r.id">{{ r.name }}</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="bairro">Bairro</label>
+        <select id="bairro" [(ngModel)]="cliente.bairro.id" name="bairro">
+          <option [ngValue]="null" disabled>Selecione...</option>
+          <option *ngFor="let b of bairros" [ngValue]="b.id">{{ b.name }}</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="cidade">Cidade</label>
+        <select id="cidade" [(ngModel)]="cliente.cidade.id" name="cidade">
+          <option [ngValue]="null" disabled>Selecione...</option>
+          <option *ngFor="let c of cidades" [ngValue]="c.id">{{ c.name }} / {{ c.uf.siglaUf }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="botoes">
+      <button type="button" class="btn-cancelar" (click)="voltar()">Cancelar</button>
+      <button type="submit" class="btn-salvar" [disabled]="salvando || isLoading">
+        <span *ngIf="!salvando">Salvar</span>
+        <span *ngIf="salvando">Salvando...</span>
+      </button>
+    </div>
+  </form>
+</div>

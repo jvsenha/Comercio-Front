@@ -1,0 +1,44 @@
+<div class=".page-header">
+  <h2>Clientes</h2>
+  <button class="btn btn-primary" (click)="addNewCliente()">Adicionar Cliente</button>
+</div>
+
+<div class=".table-card">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>Data de Nasc.</th>
+        <th>Cidade</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="isLoading">
+        <td colspan="6" class="text-center">Carregando...</td>
+      </tr>
+
+      <tr *ngIf="!isLoading && erroAoCarregar">
+        <td colspan="6" class="text-center error-message">{{ erroAoCarregar }}</td>
+      </tr>
+
+      <tr *ngIf="!isLoading && !erroAoCarregar && clientes.length === 0">
+        <td colspan="6" class="text-center">Nenhum cliente encontrado.</td>
+      </tr>
+
+      <tr *ngFor="let cliente of clientes">
+        <td>{{ cliente.id }}</td>
+        <td>{{ cliente.name }}</td>
+        <td>{{ cliente.cpfCliente }}</td>
+        <td>{{ cliente.dataNasc | date:'dd/MM/yyyy' }}</td>
+        <td>{{ cliente.cidade?.name }} - {{ cliente.cidade?.uf?.siglaUf }}</td>
+        <td class="actions">
+          <button class="btn btn-icon" (click)="editCliente(cliente)" title="Editar">✏️</button>
+          <button class="btn btn-icon btn-danger" (click)="deleteCliente(cliente.id)" title="Excluir">🗑️</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

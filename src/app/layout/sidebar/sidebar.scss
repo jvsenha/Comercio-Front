@@ -1,0 +1,80 @@
+/* src/app/layout/sidebar/sidebar.scss */
+:host {
+  flex-shrink: 0;
+}
+
+.sidebar {
+  width: 260px;
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: #333;
+}
+
+.nav-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.nav-menu a {
+  display: block;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  transition: all 0.2s ease;
+}
+
+.nav-menu a:hover {
+  background-color: #f0f2f5;
+  color: #111;
+}
+
+.nav-menu a.active {
+  background-color: #f0f2f5;
+  color: #333;
+  font-weight: 600;
+}
+
+.nav-separator {
+  color: #999;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  padding: 0 16px;
+}
+
+.upgrade-box {
+  background-color: #333;
+  color: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.upgrade-box p {
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 0 8px 0;
+}
+
+.upgrade-box span {
+  font-size: 13px;
+  opacity: 0.8;
+}

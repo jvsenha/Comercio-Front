@@ -1,0 +1,41 @@
+/* src/app/pages/clientes/cliente-form/cliente-form.scss */
+
+/* Importa o CSS de formulário que já criamos */
+@import '../../../sexo/sexo.scss';
+
+/* Adiciona um grid para formulários maiores */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px; /* 0 de gap vertical, 20px horizontal */
+}
+
+/* Em telas pequenas, volta a ser 1 coluna */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.text-center {
+  text-align: center;
+  color: #777;
+  padding: 32px;
+}
+
+/* Estilo para dropdowns */
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+select:focus {
+  border-color: #333;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.1);
+}
