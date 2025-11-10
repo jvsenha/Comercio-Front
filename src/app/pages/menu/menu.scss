@@ -1,13 +1,12 @@
-/* Estilos para os formulários de Cliente e Produto */
-
+// Conteúdo para TODOS os arquivos .scss acima
 .card {
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   width: 100%;
-  max-width: 800px; /* Um pouco maior para formulários complexos */
+  max-width: 500px;
   padding: 30px;
-  margin: 0 auto; /* Centraliza o card na página */
+  // Remove a centralização, pois o layout pai já faz isso
 }
 
 .header {
@@ -21,8 +20,6 @@
   margin: 0;
   font-size: 24px;
   color: #333;
-  text-align: center;
-  flex-grow: 1;
 }
 
 .btn-voltar {
@@ -34,36 +31,41 @@
   border-radius: 5px;
   color: #666;
 }
+
 .btn-voltar:hover {
   background-color: #f0f0f0;
 }
 
-.sucesso, .erro {
+.sucesso {
+  background-color: #d4edda;
+  color: #155724;
   padding: 12px;
   border-radius: 5px;
   margin-bottom: 20px;
   text-align: center;
 }
-.sucesso { background-color: #d4edda; color: #155724; }
-.erro { background-color: #f8d7da; color: #721c24; }
 
-.text-center {
+.erro {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 5px;
+  margin-bottom: 20px;
   text-align: center;
-  color: #777;
-  padding: 32px;
 }
 
 .campo {
   margin-bottom: 20px;
 }
+
 .campo label {
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
   color: #333;
 }
-.campo input,
-.campo select {
+
+.campo input {
   width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
@@ -71,14 +73,11 @@
   font-size: 15px;
   box-sizing: border-box;
 }
-.campo input:focus,
-.campo select:focus {
+
+.campo input:focus {
   border-color: #333;
   outline: none;
   box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.1);
-}
-.campo select {
-  background-color: #fff;
 }
 
 .botoes {
@@ -87,6 +86,7 @@
   justify-content: flex-end;
   margin-top: 30px;
 }
+
 .botoes button {
   padding: 10px 20px;
   border: none;
@@ -95,29 +95,45 @@
   font-weight: 500;
   cursor: pointer;
 }
+
 .btn-cancelar {
   background-color: #f0f2f5;
   color: #333;
 }
+
 .btn-salvar {
   background-color: #333;
   color: white;
 }
-.btn-salvar:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.crud-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
 }
 
-/* --- Layout em Grade para os Formulários --- */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0 20px; /* 0 de gap vertical, 20px horizontal */
+.crud-layout .card {
+  flex: 1;
+  max-width: 500px;
 }
 
-/* Em telas pequenas, volta a ser 1 coluna */
-@media (max-width: 768px) {
-  .form-grid {
-    grid-template-columns: 1fr;
+.crud-layout .list-card {
+  flex: 2;
+  max-width: none;
+  margin-top: 0;
+}
+
+/* Responsivo: empilha em telas menores */
+@media (max-width: 992px) {
+  .crud-layout {
+    flex-direction: column;
+  }
+
+  .crud-layout .card,
+  .crud-layout .list-card {
+    max-width: none;
+  }
+
+  .crud-layout .list-card {
+    margin-top: 30px;
   }
 }

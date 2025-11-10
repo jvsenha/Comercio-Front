@@ -14,17 +14,36 @@
     <div class="form-grid">
       <div class="campo">
         <label for="name">Nome *</label>
-        <input id="name" type="text" [(ngModel)]="cliente.name" name="name" required />
+        <input
+          id="name"
+          type="text"
+          [(ngModel)]="cliente.name"
+          name="name"
+          required
+        />
       </div>
 
       <div class="campo">
         <label for="cpf">CPF *</label>
-        <input id="cpf" type="text" [(ngModel)]="cliente.cpfCliente" name="cpfCliente" required />
+        <input
+          id="cpf"
+          type="text"
+          [(ngModel)]="cliente.cpfCliente"
+          name="cpfCliente"
+          required
+          mask="000.000.000-00"
+          placeholder="000.000.000-00"
+        />
       </div>
 
       <div class="campo">
         <label for="dataNasc">Data de Nascimento</label>
-        <input id="dataNasc" type="date" [(ngModel)]="cliente.dataNasc" name="dataNasc" />
+        <input
+          id="dataNasc"
+          type="date"
+          [(ngModel)]="cliente.dataNasc"
+          name="dataNasc"
+        />
       </div>
 
       <div class="campo">
@@ -37,14 +56,21 @@
 
       <div class="campo">
         <label for="numeroCasa">Número da Casa</label>
-        <input id="numeroCasa" type="text" [(ngModel)]="cliente.numeroCasa" name="numeroCasa" />
+        <input
+          id="numeroCasa"
+          type="text"
+          [(ngModel)]="cliente.numeroCasa"
+          name="numeroCasa"
+        />
       </div>
 
       <div class="campo">
         <label for="cep">CEP</label>
         <select id="cep" [(ngModel)]="cliente.cep.id" name="cep">
           <option [ngValue]="null" disabled>Selecione...</option>
-          <option *ngFor="let c of ceps" [ngValue]="c.id">{{ c.numeroCep }}</option>
+          <option *ngFor="let c of ceps" [ngValue]="c.id">
+            {{ c.numeroCep }}
+          </option>
         </select>
       </div>
 
@@ -60,7 +86,9 @@
         <label for="bairro">Bairro</label>
         <select id="bairro" [(ngModel)]="cliente.bairro.id" name="bairro">
           <option [ngValue]="null" disabled>Selecione...</option>
-          <option *ngFor="let b of bairros" [ngValue]="b.id">{{ b.name }}</option>
+          <option *ngFor="let b of bairros" [ngValue]="b.id">
+            {{ b.name }}
+          </option>
         </select>
       </div>
 
@@ -68,14 +96,22 @@
         <label for="cidade">Cidade</label>
         <select id="cidade" [(ngModel)]="cliente.cidade.id" name="cidade">
           <option [ngValue]="null" disabled>Selecione...</option>
-          <option *ngFor="let c of cidades" [ngValue]="c.id">{{ c.name }} / {{ c.uf.siglaUf }}</option>
+          <option *ngFor="let c of cidades" [ngValue]="c.id">
+            {{ c.name }} / {{ c.uf.siglaUf }}
+          </option>
         </select>
       </div>
     </div>
 
     <div class="botoes">
-      <button type="button" class="btn-cancelar" (click)="voltar()">Cancelar</button>
-      <button type="submit" class="btn-salvar" [disabled]="salvando || isLoading">
+      <button type="button" class="btn-cancelar" (click)="voltar()">
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        class="btn-salvar"
+        [disabled]="salvando || isLoading"
+      >
         <span *ngIf="!salvando">Salvar</span>
         <span *ngIf="salvando">Salvando...</span>
       </button>

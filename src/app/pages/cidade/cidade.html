@@ -1,0 +1,85 @@
+<div class="crud-layout">
+
+  <div class="card">
+    <div class="header">
+      <button class="btn-voltar" (click)="voltar()" title="Voltar">←</button>
+      <h2>
+        <span *ngIf="!isEditMode">Cadastrar Cidade</span>
+        <span *ngIf="isEditMode">Alterar Cidade (ID: {{ formModel.id }})</span>
+      </h2>
+      <div></div>
+    </div>
+
+    <div class="sucesso" *ngIf="mensagem">✓ {{ mensagem }}</div>
+    <div class="erro" *ngIf="erro">✗ {{ erro }}</div>
+
+    <div class="form">
+      <div class="campo">
+        <label>Nome *</label>
+        <input
+          type="text"
+          [(ngModel)]="formModel.name"
+          placeholder="Digite o nome da cidade"
+          [class.input-erro]="erro && formModel.name.trim() === ''"
+        />
+      </div>
+
+      <div class="campo">
+        <label>UF *</label>
+        <select
+          [(ngModel)]="formModel.uf.id"
+          name="uf"
+          required
+          [class.input-erro]="erro && !formModel.uf.id"
+        >
+          <option [ngValue]="null" disabled>Selecione uma UF...</option>
+          <option *ngFor="let uf of listaDeUfs" [ngValue]="uf.id">
+            {{ uf.siglaUf }} - {{ uf.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="botoes">
+        <button *ngIf="isEditMode" class="btn-cancelar" (click)="resetarFormulario()">Cancelar Edição</button>
+        <button class="btn-salvar" (click)="salvar()" [disabled]="salvando || isLoading">
+          <span *ngIf="!salvando && !isEditMode">Salvar Novo</span>
+          <span *ngIf="!salvando && isEditMode">Atualizar</span>
+          <span *ngIf="salvando">Salvando...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card list-card">
+    <h3>Cidades Registradas</h3>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>UF</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoading">
+            <td colspan="4" class="text-center">Carregando...</td>
+          </tr>
+          <tr *ngIf="!isLoading && listaDeCidades.length === 0">
+            <td colspan="4" class="text-center">Nenhum item registrado.</td>
+          </tr>
+          <tr *ngFor="let item of listaDeCidades">
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.uf?.siglaUf }}</td> <td class="actions">
+              <button class="btn-icon btn-editar" (click)="iniciarEdicao(item)" title="Alterar">✏️</button>
+              <button class="btn-icon btn-deletar" (click)="deletar(item.id)" title="Deletar">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

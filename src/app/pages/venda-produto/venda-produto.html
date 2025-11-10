@@ -1,0 +1,117 @@
+<div class="crud-layout">
+
+  <div class="card">
+    <div class="header">
+      <button class="btn-voltar" (click)="voltar()" title="Voltar">←</button>
+      <h2>
+        <span *ngIf="!isEditMode">Adicionar Item à Venda</span>
+        <span *ngIf="isEditMode">Alterar Item da Venda</span>
+      </h2>
+      <div></div>
+    </div>
+
+    <div class="sucesso" *ngIf="mensagem">✓ {{ mensagem }}</div>
+    <div class="erro" *ngIf="erro">✗ {{ erro }}</div>
+
+    <div class="form">
+      <div class="campo">
+        <label>Venda (ID - Cliente - Data) *</label>
+        <select
+          [(ngModel)]="formModel.id.vendaId"
+          name="vendaId"
+          required
+          [disabled]="isEditMode"
+          [class.input-erro]="erro && !formModel.id.vendaId"
+        >
+          <option [ngValue]="null" disabled>Selecione uma venda...</option>
+          <option *ngFor="let v of listaDeVendas" [ngValue]="v.id">
+            ID: {{v.id}} - {{v.cliente?.name}} - ({{v.dataVenda | date:'dd/MM'}})
+          </option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Produto *</label>
+        <select
+          [(ngModel)]="formModel.id.produtoId"
+          name="produtoId"
+          required
+          [disabled]="isEditMode"
+          [class.input-erro]="erro && !formModel.id.produtoId"
+        >
+          <option [ngValue]="null" disabled>Selecione um produto...</option>
+          <option *ngFor="let p of listaDeProdutos" [ngValue]="p.id">
+            {{ p.name }} ({{ p.valor | currency:'BRL' }})
+          </option>
+        </select>
+      </div>
+
+      <div class="form-grid-cols-2">
+        <div class="campo">
+          <label>Quantidade *</label>
+          <input
+            type="number"
+            [(ngModel)]="formModel.quantidade"
+            name="quantidade"
+            [class.input-erro]="erro && formModel.quantidade <= 0"
+          />
+        </div>
+
+        <div class="campo">
+          <label>Preço Unitário (R$)</label>
+          <input
+            type="number"
+            step="0.01"
+            [(ngModel)]="formModel.precoUnitario"
+            name="precoUnitario"
+          />
+        </div>
+      </div>
+
+      <div class="botoes">
+        <button *ngIf="isEditMode" class="btn-cancelar" (click)="resetarFormulario()">Cancelar Edição</button>
+        <button class="btn-salvar" (click)="salvar()" [disabled]="salvando || isLoading">
+          <span *ngIf="!salvando && !isEditMode">Salvar Novo</span>
+          <span *ngIf="!salvando && isEditMode">Atualizar</span>
+          <span *ngIf="salvando">Salvando...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card list-card">
+    <h3>Itens de Venda Registrados</h3>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Venda ID</th>
+            <th>Produto</th>
+            <th>Qtd.</th>
+            <th>Preço Unit.</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoading">
+            <td colspan="5" class="text-center">Carregando...</td>
+          </tr>
+          <tr *ngIf="!isLoading && listaDeVendaProdutos.length === 0">
+            <td colspan="5" class="text-center">Nenhum item registrado.</td>
+          </tr>
+          <tr *ngFor="let item of listaDeVendaProdutos">
+            <td>{{ item.id?.vendaId }}</td>
+            <td>{{ item.produto?.name }}</td>
+            <td>{{ item.quantidade }}</td>
+            <td>{{ item.precoUnitario | currency:'BRL' }}</td>
+            <td class="actions">
+              <button class="btn-icon btn-editar" (click)="iniciarEdicao(item)" title="Alterar">✏️</button>
+              <button class="btn-icon btn-deletar" (click)="deletar(item)" title="Deletar">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

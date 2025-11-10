@@ -2,7 +2,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SidebarComponent } from './layout/sidebar/sidebar'; // 1. Importe aqui
+import { SidebarComponent } from './layout/sidebar/sidebar'; // Verifique esta linha
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { SidebarComponent } from './layout/sidebar/sidebar'; // 1. Importe aqui
   imports: [
     RouterOutlet,
     CommonModule,
-    SidebarComponent // 2. Adicione aqui
+    SidebarComponent // E esta
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.scss']

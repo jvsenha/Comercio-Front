@@ -1,9 +1,114 @@
-/* src/app/pages/clientes/cliente-form/cliente-form.scss */
+/* Estilos para os formulários de Cliente e Produto */
 
-/* Importa o CSS de formulário que já criamos */
-@import '../../../sexo/sexo.scss';
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 800px; /* Um pouco maior para formulários complexos */
+  padding: 30px;
+  margin: 0 auto; /* Centraliza o card na página */
+}
 
-/* Adiciona um grid para formulários maiores */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.btn-voltar {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  color: #666;
+}
+.btn-voltar:hover {
+  background-color: #f0f0f0;
+}
+
+.sucesso, .erro {
+  padding: 12px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.sucesso { background-color: #d4edda; color: #155724; }
+.erro { background-color: #f8d7da; color: #721c24; }
+
+.text-center {
+  text-align: center;
+  color: #777;
+  padding: 32px;
+}
+
+.campo {
+  margin-bottom: 20px;
+}
+.campo label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+.campo input,
+.campo select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+.campo input:focus,
+.campo select:focus {
+  border-color: #333;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.1);
+}
+.campo select {
+  background-color: #fff;
+}
+
+.botoes {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+.botoes button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.btn-cancelar {
+  background-color: #f0f2f5;
+  color: #333;
+}
+.btn-salvar {
+  background-color: #333;
+  color: white;
+}
+.btn-salvar:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* --- Layout em Grade para os Formulários --- */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -15,27 +120,4 @@
   .form-grid {
     grid-template-columns: 1fr;
   }
-}
-
-.text-center {
-  text-align: center;
-  color: #777;
-  padding: 32px;
-}
-
-/* Estilo para dropdowns */
-select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 15px;
-  background-color: #fff;
-  box-sizing: border-box;
-}
-
-select:focus {
-  border-color: #333;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.1);
 }

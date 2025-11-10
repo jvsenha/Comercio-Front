@@ -1,4 +1,4 @@
-// src/app/app.routes
+// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 
 // Páginas Principais
@@ -11,34 +11,40 @@ import { ClienteFormComponent } from './pages/clientes/cliente-form/cliente-form
 import { ProdutoFormComponent } from './pages/produtos/produto-form/produto-form';
 
 // Formulários Auxiliares
-import { SexoComponent } from './sexo/sexo';
-import { UfComponent } from './uf/uf';
-import { BairroComponent } from './bairro/bairro';
-import { CepComponent } from './cep/cep';
-import { RuaComponent } from './rua/rua';
-import { MarcaComponent } from './marca/marca';
-import { TipoComponent } from './tipo/tipo';
+import { SexoComponent } from './pages/sexo/sexo';
+import { UfComponent } from './pages/uf/uf';
+import { BairroComponent } from './pages/bairro/bairro';
+import { CepComponent } from './pages/cep/cep';
+import { RuaComponent } from './pages/rua/rua';
+import { MarcaComponent } from './pages/marca/marca';
+import { TipoComponent } from './pages/tipo/tipo';
+import { CidadeComponent } from './pages/cidade/cidade';
+import { VendaComponent } from './pages/venda/venda'; 
+import { VendaProdutoComponent } from './pages/venda-produto/venda-produto';
 
 export const routes: Routes = [
   // Rotas principais
   { path: 'dashboard', component: DashboardComponent },
 
   { path: 'clientes', component: ClienteListComponent },
-  { path: 'clientes/novo', component: ClienteFormComponent }, // <-- ADICIONADA
-  // { path: 'clientes/editar/:id', component: ClienteFormComponent }, // Para o futuro
+  { path: 'clientes/novo', component: ClienteFormComponent },
+  { path: 'clientes/editar/:id', component: ClienteFormComponent }, // <-- ADICIONE
 
   { path: 'produtos', component: ProdutoListComponent },
-  { path: 'produtos/novo', component: ProdutoFormComponent }, // <-- ADICIONADA
-  // { path: 'produtos/editar/:id', component: ProdutoFormComponent }, // Para o futuro
+  { path: 'produtos/novo', component: ProdutoFormComponent },
+  { path: 'produtos/editar/:id', component: ProdutoFormComponent }, // <-- ADICIONE
 
-  // Rotas de cadastro que você já criou
+  // Rotas de cadastro
   { path: 'sexo', component: SexoComponent },
   { path: 'uf', component: UfComponent },
+  { path: 'cidade', component: CidadeComponent },
   { path: 'bairro', component: BairroComponent },
   { path: 'cep', component: CepComponent },
   { path: 'rua', component: RuaComponent },
   { path: 'marca', component: MarcaComponent },
   { path: 'tipo', component: TipoComponent },
+  { path: 'vendas', component: VendaComponent }, // <-- ADICIONE
+  { path: 'venda-produtos', component: VendaProdutoComponent },
 
   // Rota padrão
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },

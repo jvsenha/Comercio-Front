@@ -49,7 +49,7 @@ export class ProdutoListComponent implements OnInit {
     if (confirm('Tem certeza que deseja excluir este produto?')) {
       this.apiService.deleteProduto(id).subscribe({
         next: () => {
-          this.loadProdutos(); // Recarrega a lista
+          this.loadProdutos();
         },
         error: (err) => {
           console.error(`Erro ao excluir produto ${id}:`, err);
@@ -60,10 +60,10 @@ export class ProdutoListComponent implements OnInit {
   }
 
   addNewProduto(): void {
-    this.router.navigate(['/produtos/novo']); // <-- MODIFICADO
+    this.router.navigate(['/produtos/novo']);
   }
 
-  editProduto(produto: any): void {
-    // this.router.navigate(['/produtos/editar', produto.id]);
+editProduto(produto: any): void {
+    this.router.navigate(['/produtos/editar', produto.id]);
   }
 }

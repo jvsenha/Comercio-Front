@@ -64,8 +64,8 @@ export class ClienteListComponent implements OnInit {
     this.router.navigate(['/clientes/novo']); // <-- MODIFICADO
   }
 
-  editCliente(cliente: any): void {
-    // Implementar navegação para formulário de edição
-    // this.router.navigate(['/clientes/editar', cliente.id]);
+editCliente(cliente: any): void {
+    // ARRUIME AQUI: Navega para a rota de edição com o ID
+    this.router.navigate(['/clientes/editar', cliente.id]);
   }
 }

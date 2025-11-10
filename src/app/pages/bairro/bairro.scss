@@ -1,0 +1,198 @@
+/* src/app/sexo/sexo.scss */
+
+/* Estilos do Formulário (do passo anterior) */
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 600px;
+  padding: 30px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.btn-voltar {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  color: #666;
+}
+
+.sucesso, .erro {
+  padding: 12px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.sucesso { background-color: #d4edda; color: #155724; }
+.erro { background-color: #f8d7da; color: #721c24; }
+
+.campo {
+  margin-bottom: 20px;
+}
+.campo label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+.campo input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.botoes {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+.botoes button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.btn-cancelar {
+  background-color: #f0f2f5;
+  color: #333;
+}
+.btn-salvar {
+  background-color: #333;
+  color: white;
+}
+.btn-salvar:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* --- NOVOS ESTILOS PARA A LISTA --- */
+
+.list-card {
+  margin-top: 30px;
+  max-width: 600px; // Mesma largura do card de cima
+}
+
+.list-card h3 {
+  font-weight: 600;
+  font-size: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e7eaf3;
+}
+
+th {
+  font-weight: 600;
+  font-size: 14px;
+  color: #555;
+  text-transform: uppercase;
+}
+
+td {
+  font-size: 15px;
+  color: #333;
+}
+
+.text-center {
+  text-align: center;
+  color: #777;
+  padding: 20px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  width: 100px; // Largura fixa para os botões
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 5px;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+}
+.btn-icon:hover {
+  background-color: #f0f2f5;
+}
+
+.btn-editar {
+  color: #333;
+}
+.btn-deletar {
+  color: #e53e3e;
+}
+.crud-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.crud-layout .card {
+  flex: 1;
+  max-width: 500px;
+}
+
+.crud-layout .list-card {
+  flex: 2;
+  max-width: none;
+  margin-top: 0;
+}
+
+/* Responsivo: empilha em telas menores */
+@media (max-width: 992px) {
+  .crud-layout {
+    flex-direction: column;
+  }
+
+  .crud-layout .card,
+  .crud-layout .list-card {
+    max-width: none;
+  }
+
+  .crud-layout .list-card {
+    margin-top: 30px;
+  }
+}

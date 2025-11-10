@@ -1,9 +1,8 @@
-// src/app/pages/produtos/produto-form/produto-form.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../../services/api.service/api.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router'; // 1. Importe ActivatedRoute
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -15,7 +14,6 @@ import { forkJoin } from 'rxjs';
 })
 export class ProdutoFormComponent implements OnInit {
 
-  // Modelo para o formulário
   produto: any = {
     name: '',
     valor: 0,
@@ -24,40 +22,81 @@ export class ProdutoFormComponent implements OnInit {
     tipo: { id: null }
   };
 
-  // Listas para os dropdowns
   marcas: any[] = [];
   tipos: any[] = [];
 
-  isLoading = true; // Usado apenas para "Carregando dados..."
+  isLoading = true; // Agora controla o carregamento de tudo
   salvando = false;
   mensagem = '';
-  erro = ''; // Usado apenas para erros ao salvar
+  erro = '';
+  isEditMode = false; // 2. Adicione o modo de edição
+  private produtoId: number | null = null; // 3. Adicione o ID do produto
 
   constructor(
     private apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute // 4. Injete o ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.carregarDropdowns();
+    // 5. Verifique se há um ID na URL
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.isEditMode = true;
+      this.produtoId = +idParam;
+    }
+    this.carregarDadosIniciais();
   }
 
-  carregarDropdowns(): void {
+  carregarDadosIniciais(): void {
     this.isLoading = true;
-    this.erro = ''; // Limpa erros antigos
 
-    forkJoin({
+    // 6. Carregue os dropdowns primeiro
+    const dropdowns = forkJoin({
       marcas: this.apiService.getMarcas(),
       tipos: this.apiService.getTipos()
-    }).subscribe({
+    });
+
+    dropdowns.subscribe({
       next: (data) => {
         this.marcas = data.marcas;
         this.tipos = data.tipos;
+
+        // 7. Se for modo de edição, carregue os dados do produto
+        if (this.isEditMode && this.produtoId) {
+          this.carregarDadosProduto(this.produtoId);
+        } else {
+          this.isLoading = false; // Pronto para adicionar
+        }
+      },
+      error: (err) => {
+        this.erro = 'Erro ao carregar dados. Tente novamente.';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  // 8. Novo método para carregar o produto
+  carregarDadosProduto(id: number): void {
+    this.apiService.getProdutos().subscribe({
+      next: (produtos) => {
+        const produtoParaEditar = produtos.find(p => p.id === id);
+        if (produtoParaEditar) {
+          // Preenche o formulário
+          this.produto = {
+            ...produtoParaEditar,
+            // Garante que os objetos aninhados tenham apenas o 'id'
+            marca: { id: produtoParaEditar.marca?.id || null },
+            tipo: { id: produtoParaEditar.tipo?.id || null }
+          };
+        } else {
+          this.erro = 'Produto não encontrado.';
+        }
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Erro ao carregar dropdowns de produto:', err);
-        // Como solicitado, não mostramos erro ao usuário se os dropdowns falharem
+        console.error('Erro ao buscar produto:', err);
+        this.erro = 'Erro ao carregar produto.';
         this.isLoading = false;
       }
     });
@@ -68,23 +107,29 @@ export class ProdutoFormComponent implements OnInit {
     this.erro = '';
     this.mensagem = '';
 
-    // Validação
     if (!this.produto.name || !this.produto.marca.id || !this.produto.tipo.id) {
       this.erro = 'Nome, Marca e Tipo são obrigatórios.';
       this.salvando = false;
       return;
     }
 
-    this.apiService.salvarProduto(this.produto).subscribe({
+    let observable;
+    // 9. Verifique o modo de edição para salvar ou atualizar
+    if (this.isEditMode && this.produtoId) {
+      observable = this.apiService.updateProduto(this.produtoId, this.produto);
+    } else {
+      observable = this.apiService.salvarProduto(this.produto);
+    }
+
+    observable.subscribe({
       next: () => {
         this.salvando = false;
-        this.mensagem = 'Produto salvo com sucesso!';
+        this.mensagem = `Produto ${this.isEditMode ? 'atualizado' : 'salvo'} com sucesso!`;
         setTimeout(() => {
           this.router.navigate(['/produtos']);
         }, 1500);
       },
       error: (err) => {
-        // Mostra o erro específico do backend, se disponível
         this.erro = 'Erro ao salvar produto: ' + (err.error?.mensagem || 'Verifique os campos.');
         this.salvando = false;
       }
