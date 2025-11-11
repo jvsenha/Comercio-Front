@@ -1,85 +1,153 @@
-<div class="crud-layout">
+<div class="card card-nova-venda">
+  <div class="header">
+    <button class="btn-voltar" (click)="voltar()" title="Voltar">←</button>
+    <h2>
+      <span>Registrar Nova Venda</span>
+    </h2>
+    <div></div>
+  </div>
 
-  <div class="card">
-    <div class="header">
-      <button class="btn-voltar" (click)="voltar()" title="Voltar">←</button>
-      <h2>
-        <span *ngIf="!isEditMode">Registrar Venda</span>
-        <span *ngIf="isEditMode">Alterar Venda (ID: {{ formModel.id }})</span>
-      </h2>
-      <div></div>
-    </div>
+  <div class="sucesso" *ngIf="mensagem">✓ {{ mensagem }}</div>
+  <div class="erro" *ngIf="erro">✗ {{ erro }}</div>
 
-    <div class="sucesso" *ngIf="mensagem">✓ {{ mensagem }}</div>
-    <div class="erro" *ngIf="erro">✗ {{ erro }}</div>
-
-    <div class="form">
-      <div class="campo">
-        <label>Data da Venda *</label>
-        <input
-          type="date"
-          [(ngModel)]="formModel.dataVenda"
-          [class.input-erro]="erro && !formModel.dataVenda"
-        />
-      </div>
-
+  <div class="form">
+    <div class="form-grid-cols-2">
       <div class="campo">
         <label>Cliente *</label>
-        <select
-          [(ngModel)]="formModel.cliente.id"
-          name="cliente"
-          required
-          [class.input-erro]="erro && !formModel.cliente.id"
-        >
+        <select [(ngModel)]="formVenda.cliente.id" name="cliente" [class.input-erro]="erro && !formVenda.cliente.id">
           <option [ngValue]="null" disabled>Selecione um cliente...</option>
           <option *ngFor="let cli of listaDeClientes" [ngValue]="cli.id">
             {{ cli.name }} (CPF: {{ cli.cpfCliente }})
           </option>
         </select>
       </div>
-
-      <div class="botoes">
-        <button *ngIf="isEditMode" class="btn-cancelar" (click)="resetarFormulario()">Cancelar Edição</button>
-        <button class="btn-salvar" (click)="salvar()" [disabled]="salvando || isLoading">
-          <span *ngIf="!salvando && !isEditMode">Salvar Novo</span>
-          <span *ngIf="!salvando && isEditMode">Atualizar</span>
-          <span *ngIf="salvando">Salvando...</span>
-        </button>
+      <div class="campo">
+        <label>Data da Venda *</label>
+        <input type="date" [(ngModel)]="formVenda.dataVenda" [class.input-erro]="erro && !formVenda.dataVenda" />
       </div>
     </div>
   </div>
 
-  <div class="card list-card">
-    <h3>Vendas Registradas</h3>
+  <hr class="divider">
+
+  <div class="form-add-item">
+    <div class="campo campo-produto">
+      <label>Produto *</label>
+      <select [(ngModel)]="formItem.produtoId" name="produtoId">
+        <option [ngValue]="null" disabled>Selecione um produto...</option>
+        <option *ngFor="let p of listaDeProdutos" [ngValue]="p.id">
+          {{ p.name }} (Estoque: {{ p.quantidade }}) - {{ p.valor | currency:'BRL' }}
+        </option>
+      </select>
+    </div>
+    <div class="campo campo-qtd">
+      <label>Qtd. *</label>
+      <input type="number" [(ngModel)]="formItem.quantidade" name="quantidade" min="1" />
+    </div>
+    <div class="campo-btn">
+      <button class="btn-add" (click)="adicionarAoCarrinho()">Adicionar +</button>
+    </div>
+  </div>
+  <div class="erro erro-item" *ngIf="erroItem">✗ {{ erroItem }}</div>
+
+  <div class="carrinho">
+    <h4>Itens da Venda</h4>
     <div class="table-container">
       <table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Data</th>
-            <th>Cliente</th>
-            <th>Ações</th>
+            <th>Produto</th>
+            <th>Qtd.</th>
+            <th>Preço Unit.</th>
+            <th>Subtotal</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngIf="isLoading">
-            <td colspan="4" class="text-center">Carregando...</td>
+          <tr *ngIf="carrinho.length === 0">
+            <td colspan="5" class="text-center">Carrinho vazio</td>
           </tr>
-          <tr *ngIf="!isLoading && listaDeVendas.length === 0">
-            <td colspan="4" class="text-center">Nenhuma venda registrada.</td>
-          </tr>
-          <tr *ngFor="let item of listaDeVendas">
-            <td>{{ item.id }}</td>
-            <td>{{ item.dataVenda | date:'dd/MM/yyyy' }}</td>
-            <td>{{ item.cliente?.name }}</td>
+          <tr *ngFor="let item of carrinho">
+            <td>{{ item.nomeProduto }}</td>
+            <td>{{ item.quantidade }}</td>
+            <td>{{ item.precoUnitario | currency:'BRL' }}</td>
+            <td>{{ item.subtotal | currency:'BRL' }}</td>
             <td class="actions">
-              <button class="btn-icon btn-editar" (click)="iniciarEdicao(item)" title="Alterar">✏️</button>
-              <button class="btn-icon btn-deletar" (click)="deletar(item.id)" title="Deletar">🗑️</button>
+              <button class="btn-icon btn-deletar" (click)="removerDoCarrinho(item.produtoId)" title="Remover">🗑️</button>
             </td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" class="total-label">Total:</td>
+            <td colspan="2" class="total-valor">{{ getTotalCarrinho() | currency:'BRL' }}</td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>
 
+  <div class="botoes">
+    <button class="btn-cancelar" (click)="resetarFormulario()">Limpar Tudo</button>
+    <button class="btn-salvar" (click)="salvarVendaCompleta()" [disabled]="salvando || isLoading || carrinho.length === 0">
+      <span *ngIf="!salvando">Salvar Venda</span>
+      <span *ngIf="salvando">Salvando...</span>
+    </button>
+  </div>
+</div>
+
+<!-- Card 2: Lista de Vendas Passadas (HISTÓRICO) -->
+<div class="card list-card">
+  <h3>Vendas Registradas (Histórico)</h3>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Data</th>
+          <th>Cliente</th>
+          <th>Itens da Venda</th> <!-- COLUNA ADICIONADA -->
+          <th>Total</th> <!-- COLUNA ADICIONADA -->
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="isLoading">
+          <td colspan="6" class="text-center">Carregando...</td> <!-- COLSPAN ATUALIZADO -->
+        </tr>
+        <tr *ngIf="!isLoading && listaDeVendas.length === 0">
+          <td colspan="6" class="text-center">Nenhuma venda registrada.</td> <!-- COLSPAN ATUALIZADO -->
+        </tr>
+
+        <!-- LINHAS DO HISTÓRICO ATUALIZADAS -->
+        <tr *ngFor="let item of listaDeVendas">
+          <td>{{ item.id }}</td>
+          <td>{{ item.dataVenda | date:'dd/MM/yyyy' }}</td>
+          <td>{{ item.cliente?.name }}</td>
+
+          <!-- Coluna de Itens (Nova) -->
+          <td>
+            <ul class="lista-itens-venda">
+              <li *ngFor="let vp of item.itens">
+                {{ vp.quantidade }}x {{ vp.produto?.name }}
+              </li>
+              <li *ngIf="!item.itens || item.itens.length === 0">
+                (Sem itens)
+              </li>
+            </ul>
+          </td>
+
+          <!-- Coluna de Total (Nova) -->
+          <td>
+            {{ calcularTotalVenda(item.itens) | currency:'BRL' }}
+          </td>
+
+          <td class="actions">
+            <!-- <button class="btn-icon btn-editar" (click)="iniciarEdicaoVenda(item)" title="Alterar">✏️</button> -->
+            <button class="btn-icon btn-deletar" (click)="deletarVenda(item.id)" title="Deletar">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

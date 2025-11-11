@@ -1,4 +1,3 @@
-// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 
 // Páginas Principais
@@ -10,7 +9,10 @@ import { ProdutoListComponent } from './pages/produtos/produto-list/produto-list
 import { ClienteFormComponent } from './pages/clientes/cliente-form/cliente-form';
 import { ProdutoFormComponent } from './pages/produtos/produto-form/produto-form';
 
-// Formulários Auxiliares
+// Componente de Venda (Novo)
+import { VendaComponent } from './pages/venda/venda';
+
+// Formulários/CRUDs Auxiliares
 import { SexoComponent } from './pages/sexo/sexo';
 import { UfComponent } from './pages/uf/uf';
 import { BairroComponent } from './pages/bairro/bairro';
@@ -19,8 +21,6 @@ import { RuaComponent } from './pages/rua/rua';
 import { MarcaComponent } from './pages/marca/marca';
 import { TipoComponent } from './pages/tipo/tipo';
 import { CidadeComponent } from './pages/cidade/cidade';
-import { VendaComponent } from './pages/venda/venda'; 
-import { VendaProdutoComponent } from './pages/venda-produto/venda-produto';
 
 export const routes: Routes = [
   // Rotas principais
@@ -28,11 +28,13 @@ export const routes: Routes = [
 
   { path: 'clientes', component: ClienteListComponent },
   { path: 'clientes/novo', component: ClienteFormComponent },
-  { path: 'clientes/editar/:id', component: ClienteFormComponent }, // <-- ADICIONE
+  { path: 'clientes/editar/:id', component: ClienteFormComponent },
 
   { path: 'produtos', component: ProdutoListComponent },
   { path: 'produtos/novo', component: ProdutoFormComponent },
-  { path: 'produtos/editar/:id', component: ProdutoFormComponent }, // <-- ADICIONE
+  { path: 'produtos/editar/:id', component: ProdutoFormComponent },
+
+  { path: 'vendas', component: VendaComponent },
 
   // Rotas de cadastro
   { path: 'sexo', component: SexoComponent },
@@ -43,8 +45,6 @@ export const routes: Routes = [
   { path: 'rua', component: RuaComponent },
   { path: 'marca', component: MarcaComponent },
   { path: 'tipo', component: TipoComponent },
-  { path: 'vendas', component: VendaComponent }, // <-- ADICIONE
-  { path: 'venda-produtos', component: VendaProdutoComponent },
 
   // Rota padrão
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },

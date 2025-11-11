@@ -1,18 +1,16 @@
-// src/app/layout/sidebar/sidebar.ts
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router'; // 1. Importe o RouterModule
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [
-    RouterModule, // 2. Adicione aqui
+    RouterModule,
     CommonModule
   ],
   templateUrl: './sidebar.html',
   styleUrls: ['./sidebar.scss']
 })
 export class SidebarComponent {
-  // A lógica de navegação agora é feita por routerLink
 }

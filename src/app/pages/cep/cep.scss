@@ -1,6 +1,3 @@
-/* src/app/sexo/sexo.scss */
-
-/* Estilos do Formulário (do passo anterior) */
 .card {
   background: white;
   border-radius: 12px;
@@ -89,11 +86,9 @@
   cursor: not-allowed;
 }
 
-/* --- NOVOS ESTILOS PARA A LISTA --- */
-
 .list-card {
   margin-top: 30px;
-  max-width: 600px; // Mesma largura do card de cima
+  max-width: 600px;
 }
 
 .list-card h3 {
@@ -141,7 +136,7 @@ td {
 .actions {
   display: flex;
   gap: 10px;
-  width: 100px; // Largura fixa para os botões
+  width: 100px;
 }
 
 .btn-icon {
@@ -181,7 +176,6 @@ td {
   margin-top: 0;
 }
 
-/* Responsivo: empilha em telas menores */
 @media (max-width: 992px) {
   .crud-layout {
     flex-direction: column;

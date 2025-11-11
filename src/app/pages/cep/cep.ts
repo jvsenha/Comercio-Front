@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service/api.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { NgxMaskDirective } from 'ngx-mask'; // Importa a máscara
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-cep',
@@ -12,19 +12,19 @@ import { NgxMaskDirective } from 'ngx-mask'; // Importa a máscara
   imports: [
     FormsModule,
     CommonModule,
-    NgxMaskDirective // Adiciona a máscara
+    NgxMaskDirective
   ],
   styleUrls: ['./cep.scss']
 })
 export class CepComponent implements OnInit {
 
-  // Modelo do formulário
+
   formModel: any = { id: null, numeroCep: '' };
 
-  // Lista para a tabela
+
   listaDeCeps: any[] = [];
 
-  // Estados
+
   isLoading = true;
   isEditMode = false;
   salvando = false;
@@ -63,7 +63,7 @@ export class CepComponent implements OnInit {
     this.erro = '';
     this.mensagem = '';
 
-    // Cria o objeto de dados para enviar
+    
     const dadosParaSalvar = {
       id: this.formModel.id,
       numeroCep: cepSemMascara

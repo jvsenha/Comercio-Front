@@ -216,3 +216,251 @@ input[type="date"].input-erro {
   border-color: #e53e3e;
   background-color: #fef2f2;
 }
+
+crud-layout {
+  display: block;
+}
+
+.card-nova-venda {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.list-card {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+select, input[type="date"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+select.input-erro, input.input-erro {
+  border-color: #e53e3e;
+  background-color: #fef2f2;
+}
+
+.form-grid-cols-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 25px 0;
+}
+
+.form-add-item {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.campo-produto {
+  flex: 3;
+}
+.campo-qtd {
+  flex: 1;
+}
+.campo-btn {
+  padding-bottom: 2px;
+}
+
+.btn-add {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #2a6df1;
+  color: white;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+}
+.btn-add:hover {
+  background-color: #1a59d1;
+}
+
+.erro-item {
+  margin-top: 10px;
+  text-align: left;
+  margin-bottom: 0;
+  color: #721c24;
+  background-color: #f8d7da;
+  padding: 12px;
+  border-radius: 5px;
+}
+
+.carrinho {
+  margin-top: 25px;
+}
+.carrinho h4 {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.carrinho .table-container {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.carrinho table th {
+  background-color: #f8f9fa;
+  text-transform: none;
+  font-size: 14px;
+}
+.carrinho table td, .carrinho table th {
+  padding: 12px 15px;
+}
+.carrinho tfoot td {
+  border-top: 2px solid #ddd;
+  font-weight: 600;
+  font-size: 16px;
+}
+.carrinho .total-label {
+  text-align: right;
+  padding-right: 10px;
+}
+.carrinho .total-valor {
+  width: 150px;
+}
+.lista-itens-venda {
+  padding-left: 15px;
+  margin: 0;
+  font-size: 14px;
+}
+.lista-itens-venda li {
+  white-space: nowrap;
+}
+
+.crud-layout {
+  display: block;
+}
+
+.card-nova-venda {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.list-card {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+select, input[type="date"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+select.input-erro, input.input-erro {
+  border-color: #e53e3e;
+  background-color: #fef2f2;
+}
+
+.form-grid-cols-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 25px 0;
+}
+
+.form-add-item {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.campo-produto {
+  flex: 3;
+}
+.campo-qtd {
+  flex: 1;
+}
+.campo-btn {
+  padding-bottom: 2px;
+}
+
+.btn-add {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #2a6df1;
+  color: white;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+}
+.btn-add:hover {
+  background-color: #1a59d1;
+}
+
+.erro-item {
+  margin-top: 10px;
+  text-align: left;
+  margin-bottom: 0;
+  color: #721c24;
+  background-color: #f8d7da;
+  padding: 12px;
+  border-radius: 5px;
+}
+
+.carrinho {
+  margin-top: 25px;
+}
+.carrinho h4 {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.carrinho .table-container {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.carrinho table th {
+  background-color: #f8f9fa;
+  text-transform: none;
+  font-size: 14px;
+}
+.carrinho table td, .carrinho table th {
+  padding: 12px 15px;
+}
+.carrinho tfoot td {
+  border-top: 2px solid #ddd;
+  font-weight: 600;
+  font-size: 16px;
+}
+.carrinho .total-label {
+  text-align: right;
+  padding-right: 10px;
+}
+.carrinho .total-valor {
+  width: 150px;
+}
+
+/* ESTILO ADICIONADO PARA A LISTA DE ITENS NO HISTÓRICO */
+.lista-itens-venda {
+  padding-left: 15px;
+  margin: 0;
+  font-size: 14px;
+}
+.lista-itens-venda li {
+  white-space: nowrap;
+}

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service/api.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-venda',
@@ -14,23 +14,28 @@ import { forkJoin } from 'rxjs';
 })
 export class VendaComponent implements OnInit {
 
-  // Modelo do formulário
-  formModel: any = {
+  formVenda: any = {
     id: null,
-    dataVenda: '',
+    dataVenda: new Date().toISOString().split('T')[0],
     cliente: { id: null }
   };
 
-  // Listas
-  listaDeVendas: any[] = [];
-  listaDeClientes: any[] = []; // Para o dropdown
+  formItem: any = {
+    produtoId: null,
+    quantidade: 1
+  };
 
-  // Estados
+  listaDeVendas: any[] = [];
+  listaDeClientes: any[] = [];
+  listaDeProdutos: any[] = [];
+  carrinho: any[] = [];
+
   isLoading = true;
   isEditMode = false;
   salvando = false;
   mensagem = '';
   erro = '';
+  erroItem = '';
 
   constructor(private apiService: ApiService, private router: Router) { }
 
@@ -38,34 +43,18 @@ export class VendaComponent implements OnInit {
     this.carregarDadosPagina();
   }
 
-  // --- FUNÇÃO PARA CONVERTER A DATA ---
-  // Converte [2024, 11, 10] para "2024-11-10"
-  private formatarDataParaInput(dataArray: any): string {
-    if (!Array.isArray(dataArray) || dataArray.length < 3) {
-      if (typeof dataArray === 'string') {
-        return dataArray.split('T')[0]; // Se já for string ISO
-      }
-      return ''; // Retorna vazio se o formato for inválido
-    }
-    const [ano, mes, dia] = dataArray;
-    // new Date(ano, mes - 1, dia) -> O mês em Date() é base 0 (0=Jan, 11=Dez)
-    // toISOString() -> '2024-11-10T03:00:00.000Z'
-    // split('T')[0] -> '2024-11-10'
-    return new Date(ano, mes - 1, dia).toISOString().split('T')[0];
-  }
-
-  // --- FUNÇÃO CORRIGIDA ---
   carregarDadosPagina(): void {
     this.isLoading = true;
     this.erro = '';
 
     forkJoin({
       clientes: this.apiService.getClientes(),
+      produtos: this.apiService.getProdutos(),
       vendas: this.apiService.getVendas()
     }).subscribe({
       next: (data) => {
         this.listaDeClientes = data.clientes;
-        // Converte as datas da lista ANTES de exibi-las
+        this.listaDeProdutos = data.produtos;
         this.listaDeVendas = data.vendas.map(venda => {
           venda.dataVenda = this.formatarDataParaInput(venda.dataVenda);
           return venda;
@@ -73,18 +62,15 @@ export class VendaComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Erro ao carregar dados da página:', err);
         this.erro = 'Não foi possível carregar os dados. Tente novamente.';
         this.isLoading = false;
       }
     });
   }
 
-  // --- FUNÇÃO CORRIGIDA ---
   recarregarListaVendas(): void {
     this.apiService.getVendas().subscribe({
       next: (data) => {
-        // Converte as datas da lista ANTES de exibi-las
         this.listaDeVendas = data.map(venda => {
           venda.dataVenda = this.formatarDataParaInput(venda.dataVenda);
           return venda;
@@ -94,65 +80,139 @@ export class VendaComponent implements OnInit {
     });
   }
 
-  salvar(): void {
-    if (!this.formModel.dataVenda || !this.formModel.cliente.id) {
-      this.erro = 'Data e Cliente são obrigatórios';
+  adicionarAoCarrinho(): void {
+    this.erroItem = '';
+
+    const produtoSelecionado = this.listaDeProdutos.find(p => p.id == this.formItem.produtoId);
+
+    if (!produtoSelecionado) {
+      this.erroItem = 'Selecione um produto.';
       return;
     }
-    this.salvando = true;
-    this.erro = '';
-    this.mensagem = '';
-
-    let observable;
-    if (this.isEditMode) {
-      observable = this.apiService.updateVenda(this.formModel.id, this.formModel);
-    } else {
-      observable = this.apiService.salvarVenda(this.formModel);
+    if (this.formItem.quantidade <= 0) {
+      this.erroItem = 'Quantidade deve ser maior que zero.';
+      return;
     }
 
-    observable.subscribe({
-      next: () => {
-        this.salvando = false;
-        this.mensagem = `Salvo com sucesso!`;
-        this.recarregarListaVendas();
-        this.resetarFormulario();
-        setTimeout(() => { this.mensagem = ''; }, 3000);
-      },
-      error: (err) => {
-        this.salvando = false;
-        this.erro = 'Erro ao salvar: ' + (err.error?.mensagem || 'Tente novamente.');
-        console.log(err);
-      }
-    });
+    const itemExistente = this.carrinho.find(item => item.produtoId == this.formItem.produtoId);
+
+    let quantidadeFinal = 0;
+
+    if (itemExistente) {
+      quantidadeFinal = itemExistente.quantidade + this.formItem.quantidade;
+    } else {
+      quantidadeFinal = this.formItem.quantidade;
+    }
+
+    if (quantidadeFinal > produtoSelecionado.quantidade) {
+      this.erroItem = `Estoque insuficiente. Máximo: ${produtoSelecionado.quantidade}`;
+      return;
+    }
+
+    if (itemExistente) {
+      itemExistente.quantidade = quantidadeFinal;
+      itemExistente.subtotal = itemExistente.quantidade * itemExistente.precoUnitario;
+    } else {
+      this.carrinho.push({
+        produtoId: produtoSelecionado.id,
+        nomeProduto: produtoSelecionado.name,
+        quantidade: this.formItem.quantidade,
+        precoUnitario: produtoSelecionado.valor,
+        subtotal: this.formItem.quantidade * produtoSelecionado.valor,
+        estoqueMaximo: produtoSelecionado.quantidade
+      });
+    }
+
+    this.formItem.produtoId = null;
+    this.formItem.quantidade = 1;
   }
 
-  // --- FUNÇÃO CORRIGIDA ---
-  iniciarEdicao(item: any): void {
-    this.formModel = {
-      id: item.id,
-      // A data na lista já está formatada como 'YYYY-MM-DD'
-      dataVenda: item.dataVenda,
-      cliente: { id: item.cliente?.id || null }
-    };
-    this.isEditMode = true;
+  removerDoCarrinho(produtoId: number): void {
+    this.carrinho = this.carrinho.filter(item => item.produtoId !== produtoId);
+  }
+
+  getTotalCarrinho(): number {
+    return this.carrinho.reduce((total, item) => total + item.subtotal, 0);
+  }
+
+  async salvarVendaCompleta(): Promise<void> {
     this.erro = '';
     this.mensagem = '';
+
+    if (!this.formVenda.cliente.id) {
+      this.erro = 'Selecione um cliente.';
+      return;
+    }
+    if (this.carrinho.length === 0) {
+      this.erro = 'Adicione pelo menos um item ao carrinho.';
+      return;
+    }
+
+    this.salvando = true;
+
+    try {
+      const respostaVenda: any = await this.apiService.salvarVenda(this.formVenda).toPromise();
+      const novaVendaId = respostaVenda?.venda?.id;
+
+      if (!novaVendaId) {
+        throw new Error('Não foi possível obter o ID da nova venda.');
+      }
+
+      const promessasItens: Observable<any>[] = [];
+
+      for (const item of this.carrinho) {
+        const vendaProduto = {
+          id: {
+            produtoId: item.produtoId,
+            vendaId: novaVendaId
+          },
+          quantidade: item.quantidade,
+          precoUnitario: item.precoUnitario
+        };
+        promessasItens.push(this.apiService.salvarVendaProduto(vendaProduto));
+      }
+
+      await forkJoin(promessasItens).toPromise();
+
+      this.salvando = false;
+      this.mensagem = 'Venda registrada com sucesso!';
+      this.resetarFormulario();
+      this.recarregarListaVendas();
+
+      this.apiService.getProdutos().subscribe(data => {
+        this.listaDeProdutos = data;
+      });
+
+      setTimeout(() => { this.mensagem = ''; }, 4000);
+
+    } catch (err: any) {
+      console.error('Erro ao salvar venda completa:', err);
+      this.salvando = false;
+      this.erro = 'Erro ao salvar: ' + (err.error?.mensagem || err.message || 'Verifique os dados.');
+    }
   }
 
   resetarFormulario(): void {
-    this.formModel = { id: null, dataVenda: '', cliente: { id: null } };
+    this.formVenda = {
+      id: null,
+      dataVenda: new Date().toISOString().split('T')[0],
+      cliente: { id: null }
+    };
+    this.carrinho = [];
+    this.formItem = { produtoId: null, quantidade: 1 };
     this.isEditMode = false;
     this.erro = '';
+    this.erroItem = '';
     this.mensagem = '';
   }
 
-  deletar(itemId: number): void {
-    if (confirm('Tem certeza que deseja excluir esta venda? (Isso pode apagar itens de venda associados)')) {
+  deletarVenda(itemId: number): void {
+    if (confirm('Tem certeza que deseja excluir esta venda? (Isso APAGARÁ todos os itens associados a ela)')) {
       this.apiService.deleteVenda(itemId).subscribe({
         next: () => {
-          this.mensagem = 'Item excluído com sucesso!';
+          this.mensagem = 'Venda excluída com sucesso!';
           this.recarregarListaVendas();
-          if (this.isEditMode && this.formModel.id === itemId) {
+          if (this.isEditMode && this.formVenda.id === itemId) {
             this.resetarFormulario();
           }
           setTimeout(() => { this.mensagem = ''; }, 3000);
@@ -165,7 +225,33 @@ export class VendaComponent implements OnInit {
     }
   }
 
+  iniciarEdicaoVenda(item: any): void {
+    this.erro = 'A edição de vendas ainda não foi implementada.';
+  }
+
   voltar(): void {
     this.router.navigate(['/dashboard']);
+  }
+
+  private formatarDataParaInput(dataArray: any): string {
+    if (!Array.isArray(dataArray) || dataArray.length < 3) {
+      if (typeof dataArray === 'string') {
+        return dataArray.split('T')[0];
+      }
+      return '';
+    }
+    const [ano, mes, dia] = dataArray;
+    return new Date(ano, mes - 1, dia).toISOString().split('T')[0];
+  }
+
+  // ESTA FUNÇÃO ESTAVA NO LUGAR ERRADO. AGORA É UM MÉTODO DA CLASSE.
+  calcularTotalVenda(itens: any[]): number {
+    if (!itens) {
+      return 0;
+    }
+    return itens.reduce((total, item) => {
+      // O backend já manda o precoUnitario e a quantidade
+      return total + (item.precoUnitario * item.quantidade);
+    }, 0);
   }
 }
